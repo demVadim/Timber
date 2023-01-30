@@ -55,6 +55,7 @@ int main()
     float cloud2Speed = 0.0f;
     float cloud3Speed = 0.0f;
 
+    sf::Clock clock;
 
     while (window.isOpen())
     {
@@ -64,7 +65,62 @@ int main()
         }
 
             window.clear();
+            //Measure time
+            sf::Time dt = clock.restart();
+            //setup the bee
+            if (!beeActive)
+            {
+                //How fast is the bee
+                srand((int)time(0));
+                beeSpeed = (rand() % 200) + 200;
 
+                //How high is bee
+
+                srand((int)time(0) * 10);
+                float height = (rand() % 500) + 500;
+                spriteBee.setPosition(2000, height);
+                beeActive = true;
+
+            }
+            else
+            // Move the bee
+            {
+                spriteBee.setPosition(spriteBee.getPosition().x - (beeSpeed * dt.asSeconds()), spriteBee.getPosition().y);
+
+                // Has the bee reached the left-hand edge of the screen?
+                if (spriteBee.getPosition().x < -100)
+                {
+                    // Set it up ready to be a whole new bee next frame
+                    beeActive = false;
+                }
+            }
+
+            // Manage clouds
+            // Cloud 1
+            if (!cloud1Speed)
+            {
+                //How fast is the cloud
+                srand((int)time(0) * 10);
+                cloud1Speed = (rand() % 200);
+
+                // How high is the cloud
+                srand((int)time(0) * 10);
+                float height = (rand() % 150);
+                spriteCloud1.setPosition(-200, height);
+                cloud1Active = true;
+            }
+            else
+            {
+            spriteCloud1.setPosition(spriteCloud1.getPosition().x + (cloud1Speed * dt.asSeconds()),spriteCloud1.getPosition().y);
+            // Has the cloud reached the right hand edge of the screen?
+            if (spriteCloud1.getPosition().x > 1920)
+            {
+            // Set it up ready to be a whole new cloud next frame
+            cloud1Active = false;
+            }
+            }
+
+            // draw scene
             window.draw(spriteBackground);
             window.draw(spriteCloud1);
             window.draw(spriteCloud2);
