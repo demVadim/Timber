@@ -1,3 +1,4 @@
+#include <sstream>
 #include <SFML/Graphics.hpp>
 
 int main()
@@ -5,7 +6,7 @@ int main()
     sf::VideoMode vm(1920, 1080);
     sf::RenderWindow window(vm, "Timber!!!", sf::Style::Fullscreen);
 
-    //make Fon
+    //make Background
     sf::Texture textureBackground;
     textureBackground.loadFromFile("graphics/background.png");
 
@@ -63,14 +64,33 @@ int main()
     while (window.isOpen())
     {
 
-        //Handle the players input
+        /*
+        ****************************************
+        Handle the players input
+        ****************************************
+        */
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         {
             window.close();
         }
 
-            window.clear();
+        // Start the Game
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+        {
+            paused = false;
+        }
+
+        /*
+        ****************************************
+        Update the scene
+        ****************************************
+        */
+
+
+         if (!paused)
+         {
+
             //Measure time
             sf::Time dt = clock.restart();
             //setup the bee
@@ -170,10 +190,21 @@ int main()
                 if (spriteCloud3.getPosition().x > 1920)
                 {
                 // Set it up ready to be a whole new cloud next frame
-                cloud2Active = false;
+                cloud3Active = false;
                 }
             }
-            // draw scene
+         }// End if (!paused)
+
+            /*
+            ****************************************
+            Draw the scene
+            ****************************************
+            */
+
+
+            // Clear everything from the last run frame
+            window.clear();
+
             window.draw(spriteBackground);
             window.draw(spriteCloud1);
             window.draw(spriteCloud2);
